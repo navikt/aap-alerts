@@ -1,0 +1,20 @@
+name: Deploy alerts
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build_and_deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Deploy to NAIS
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: alertconfig.yaml,alerts.yaml
