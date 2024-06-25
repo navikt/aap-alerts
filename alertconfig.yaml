@@ -1,0 +1,31 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: team-aap-alerts
+  namespace: aap
+  labels:
+    alertmanagerConfig: team-aap-alerts
+    team: aap
+spec:
+  receivers:
+    - name: team-aap-alerts
+      slackConfigs:
+        - apiURL:
+            key: apiUrl
+            name: slack-webhook
+          channel: '#team-aap-prod-alerts'
+          iconEmoji: ':disappointed:'
+          username: 'Prod Alerter'
+          sendResolved: true
+          title: '{{ template "slack.title" . }}'
+          text: '{{ template "slack.text" . }}'
+          color: '{{ template "slack.color" . }}'
+  route:
+    groupInterval: 1m
+    groupWait: 10s
+    repeatInterval: 15m
+    receiver: "team-aap-alerts"
+    matchers:
+      - name: "receiver_reference"
+        matchType: "="
+        value: "team-aap-alerts"

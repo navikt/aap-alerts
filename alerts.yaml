@@ -1,0 +1,23 @@
+
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    team: aap
+  name: aap-alerts
+  namespace: aap
+spec:
+  groups:
+    - name: Podder
+      rules:
+        - alert:  Stor mengde 5xx feil siste 10 minutter
+          expr: (100 * (sum by (service, namespace) (rate(nginx_ingress_controller_requests{namespace="aap",status=~"^5\\d\\d",app!~"linkerd-proxy"}[3m]))/sum by (service, namespace) (rate(nginx_ingress_controller_requests{namespace="aap",app!~"linkerd-proxy"}[3m])))) > 10
+          for: 10m
+          labels:
+            severity: critical
+            namespace: aap
+            receiver_reference: "team-aap-alerts"
+            alert_type: custom
+          annotations:
+            summary: "`{{ $labels.deployment }}` har mange 5xx-feil siste"
+            action: "Sjekk applikasjonslogger for mer detaljer om feilene"
