@@ -31,7 +31,7 @@ spec:
           annotations:
             summary: "`{{ $labels.deployment }}` har mange 5xx-feil siste"
         - alert:  Innsending - Journalføringer feiler
-          expr: sum(increase(innsending_total{resultat="feilet"}[1h]))
+          expr: sum(increase(innsending_total{resultat="feilet"}[1h])) > 1
           for: 10m
           labels:
             severity: critical
