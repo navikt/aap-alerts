@@ -30,3 +30,23 @@ spec:
             alert_type: custom
           annotations:
             summary: "`{{ $labels.deployment }}` har mange 5xx-feil siste"
+        - alert:  Innsending - Journalføringer feiler
+          expr: increase(innsendinger_total{resulat="feilet"}[1h])) > 0
+          for: 10m
+          labels:
+            severity: critical
+            namespace: aap
+            receiver_reference: "team-aap-alerts"
+            alert_type: custom
+          annotations:
+            summary: "En eller flere journalføringer har feilet siste time. Sjekk navikt/aap-innsending"
+        - alert:  Innsending - Lite journalføringer
+          expr: increase(innsendinger_total{resulat="ok"}[15m])) < 1000
+          for: 10m
+          labels:
+            severity: critical
+            namespace: aap
+            receiver_reference: "team-aap-alerts"
+            alert_type: custom
+          annotations:
+            summary: "OBS: Dette er en test! Færre enn 10 journalføringer siste 4 timer. Sjekk navikt/aap-innsending"
