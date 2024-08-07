@@ -31,7 +31,7 @@ spec:
           annotations:
             summary: "`{{ $labels.deployment }}` har mange 5xx-feil siste"
         - alert:  Innsending - Journalføringer feiler
-          expr: sum(increase(innsending_total{resultat="feilet"}[1h])) > 1
+          expr: increase(innsending_total{resultat="feilet"}[1h]) > 0
           for: 10m
           labels:
             severity: critical
@@ -39,9 +39,9 @@ spec:
             receiver_reference: "team-aap-alerts"
             alert_type: custom
           annotations:
-            summary: "En eller flere journalføringer har feilet siste time. Sjekk navikt/aap-innsending"
-        - alert:  Innsending - Lite journalføringer
-          expr: sum(increase(innsending_total{resultat="ok"}[15m])) < 100
+            summary: "Journalføringer feiler den siste timen. Sjekk navikt/aap-innsending"
+        - alert:  Innsending - Ingen leader elected
+          expr: increase(is_apekatt_flowing_total[1h]) < 1
           for: 10m
           labels:
             severity: critical
@@ -49,4 +49,4 @@ spec:
             receiver_reference: "team-aap-alerts"
             alert_type: custom
           annotations:
-            summary: "OBS: Dette er en test! Færre enn 10 journalføringer siste 4 timer. Sjekk navikt/aap-innsending"
+            summary: "Journalføring av søknader har stoppet opp den siste timen. Sjekk navikt/aap-innsending"
