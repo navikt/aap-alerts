@@ -11,7 +11,7 @@ spec:
     - name: namespace aap
       rules:
         - alert: namespace aap - Høy error rate i logger
-          expr: (100 * sum by (app, namespace) (rate(logd_messages_total{log_level="Error",namespace="aap"}[3m])) / sum by (app, namespace) (rate(logd_messages_total{namespace="aap"}[3m]))) > 90
+          expr: (100 * sum by (app, namespace) (rate(log_messages_errors{namespace="aap"}[3m])) / sum by (app, namespace) (rate(log_messages_total{namespace="aap"}[3m]))) > 10
           for: 3m
           labels:
             severity: critical
