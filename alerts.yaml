@@ -32,14 +32,14 @@ spec:
             summary: "`{{ $labels.deployment }}` har mange 5xx-feil siste"
         - alert:  Innsending - Journalføringer feiler
           expr: increase(innsending_total{resultat="feilet"}[15m]) > 0
-          for: 10m
+          for: 30m
           labels:
             severity: critical
             namespace: aap
             receiver_reference: "team-aap-alerts"
             alert_type: custom
           annotations:
-            summary: "Journalføringer fra innsending har status feilet siste 15 min. Sjekk navikt/aap-innsending"
+            summary: "Journalføringer fra innsending har status feilet siste 30 min. Sjekk navikt/aap-innsending"
 #        - alert:  Innsending - Ingen leader elected
 #          expr: increase(is_apekatt_flowing_total[15m]) < 1
 #          for: 10m
