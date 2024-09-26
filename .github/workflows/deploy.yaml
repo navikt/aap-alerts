@@ -5,7 +5,22 @@ on:
     branches:
       - main
 jobs:
-  build_and_deploy:
+  deploy_dev:
+    name: Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Deploy to NAIS
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: alert_config_dev.yaml,alerts.yaml
+
+  deploy_prod:
     name: Deploy
     runs-on: ubuntu-latest
     permissions:
@@ -18,4 +33,4 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: prod-gcp
-          RESOURCE: alertconfig.yaml,alerts.yaml
+          RESOURCE: alert_config_prod.yaml,alerts.yaml
