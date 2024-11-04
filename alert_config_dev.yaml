@@ -6,6 +6,7 @@ metadata:
   labels:
     alertmanagerConfig: team-aap-alerts-dev
     team: aap
+    env: dev
 spec:
   receivers:
     - name: team-aap-alerts
