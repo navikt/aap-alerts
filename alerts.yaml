@@ -50,7 +50,7 @@ spec:
 #            alert_type: custom
 #          annotations:
 #            summary: "Journalføring av søknader har stoppet opp den siste 15 min. Sjekk navikt/aap-innsending"
-        - alert: Manglende pods i {{ $labels.env }}
+        - alert: Manglende pods i {{ $labels.namespace }}
           expr: kube_deployment_status_replicas_available{namespace="aap"} == 0
           for: 10m
           labels:
@@ -59,4 +59,4 @@ spec:
             receiver_reference: "team-aap-alerts"
             alert_type: custom
           annotations:
-            summary: "`{{ $labels.deployment }}` mangler aktive pods i `{{ $labels.env }}`"
+            summary: "`{{ $labels.deployment }}` mangler aktive pods i `{{ $labels.namespace }}`"
