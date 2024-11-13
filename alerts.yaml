@@ -29,7 +29,7 @@ spec:
             receiver_reference: "team-aap-alerts"
             alert_type: custom
           annotations:
-            summary: "`{{ $labels.deployment }}` har mange 5xx-feil siste"
+            summary: App {{ $labels.app }} har mange 5xx-feil siste
         - alert:  Innsending - Journalføringer feiler
           expr: increase(innsending_total{resultat="feilet"}[15m]) > 0
           for: 30m
