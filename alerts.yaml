@@ -40,16 +40,6 @@ spec:
             alert_type: custom
           annotations:
             summary: "Journalføringer fra innsending har status feilet siste 30 min. Sjekk navikt/aap-innsending"
-#        - alert:  Innsending - Ingen leader elected
-#          expr: increase(is_apekatt_flowing_total[15m]) < 1
-#          for: 10m
-#          labels:
-#            severity: critical
-#            namespace: aap
-#            receiver_reference: "team-aap-alerts"
-#            alert_type: custom
-#          annotations:
-#            summary: "Journalføring av søknader har stoppet opp den siste 15 min. Sjekk navikt/aap-innsending"
         - alert: Manglende pods
           expr: kube_deployment_status_replicas_available{namespace="aap"} == 0
           for: 10m
