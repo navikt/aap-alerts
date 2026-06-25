@@ -44,3 +44,4 @@ spec:
             value: "team-aap-vulnerabilities"
         groupBy:
           - alertname
+        repeatInterval: 1d
