@@ -14,10 +14,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
-      - name: Deploy to NAIS
+      - name: Deploy to NAIS GCP
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
+          RESOURCE: alert_config_dev.yaml,alerts.yaml
+      - name: Deploy to NAIS FSS
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-fss
           RESOURCE: alert_config_dev.yaml,alerts.yaml
 
   deploy_prod:
@@ -29,8 +34,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
-      - name: Deploy to NAIS
+      - name: Deploy to NAIS on GCP
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: prod-gcp
           RESOURCE: alert_config_prod.yaml,alerts.yaml
+      - name: Deploy to NAIS on FSS
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: prod-fss
+          RESOURCE: alert_config_prod.yaml,alerts.yaml
+
