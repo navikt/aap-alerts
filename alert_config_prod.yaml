@@ -26,6 +26,12 @@ spec:
             key: apiUrl
             name: slack-webhook
           channel: "#team-aap-security-alerts"
+          iconEmoji: ':disappointed:'
+          username: 'Prod Alerter'
+          sendResolved: true
+          title: '{{ template "slack.title" . }}'
+          text: '{{ template "slack.text" . }}'
+          color: '{{ template "slack.color" . }}'
   route:
     groupInterval: 1m
     groupWait: 10s
@@ -42,6 +48,7 @@ spec:
           - name: "receiver_reference"
             matchType: "="
             value: "team-aap-vulnerabilities"
+        continue: false
         groupBy:
           - alertname
         repeatInterval: 1d
