@@ -18,12 +18,7 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: alert_config_dev.yaml,alerts.yaml
-      - name: Deploy to NAIS fss
-        uses: nais/deploy/actions/deploy@v2
-        env:
-          CLUSTER: dev-fss
-          RESOURCE: alert_config_dev.yaml,alerts.yaml
+          RESOURCE: alert_config_dev.yaml,alerts-gcp.yaml
 
   deploy_prod:
     name: Deploy
@@ -38,10 +33,4 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: prod-gcp
-          RESOURCE: alert_config_prod.yaml,alerts.yaml
-      - name: Deploy to NAIS on fss
-        uses: nais/deploy/actions/deploy@v2
-        env:
-          CLUSTER: prod-fss
-          RESOURCE: alert_config_prod.yaml,alerts.yaml
-
+          RESOURCE: alert_config_prod.yaml,alerts-gcp.yaml
