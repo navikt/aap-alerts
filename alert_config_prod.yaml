@@ -49,6 +49,3 @@ spec:
             matchType: "="
             value: "team-aap-vulnerabilities"
         continue: false
-        groupBy:
-          - alertname
-        repeatInterval: 1d
