@@ -20,12 +20,38 @@ spec:
           title: '{{ template "slack.title" . }}'
           text: '{{ template "slack.text" . }}'
           color: '{{ template "slack.color" . }}'
+    - name: team-aap-vulnerabilities
+      slackConfigs:
+        - apiURL:
+            key: apiUrl
+            name: slack-webhook
+          channel: '#team-aap-vulnerabilities'
+          iconEmoji: ':lock:'
+          username: 'Vulnerability Alerter'
+          sendResolved: true
+          title: '{{ template "slack.title" . }}'
+          text: '{{ template "slack.text" . }}'
+          color: '{{ template "slack.color" . }}'
   route:
+    # Default filter først
     groupInterval: 1m
     groupWait: 10s
     repeatInterval: 15m
     receiver: "team-aap-alerts"
     matchers:
-      - name: "receiver_reference"
+      - name: "namespace"
         matchType: "="
-        value: "team-aap-alerts"
+        value: "aap"
+
+    # Deretter ruting for receiver_reference
+    routes:
+      - receiver: "team-aap-vulnerabilities"
+        matchers:
+          - name: "receiver_reference"
+            matchType: "="
+            value: "team-aap-vulnerabilities"
+      - receiver: "team-aap-alerts"
+        matchers:
+          - name: "receiver_reference"
+            matchType: "="
+            value: "team-aap-alerts"
