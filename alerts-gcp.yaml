@@ -7,46 +7,51 @@ metadata:
   name: aap-alerts
   namespace: aap
 spec:
-  groups:
-    - name: namespace aap
-      rules:
-        - alert: namespace aap - Høy error rate i logger
-          expr: (100 * sum by (app, namespace) (rate(log_messages_errors{namespace="aap"}[3m])) / sum by (app, namespace) (rate(log_messages_total{namespace="aap"}[3m]))) > 10
-          for: 3m
-          labels:
-            severity: critical
-            namespace: aap
-            receiver_reference: "team-aap-alerts"
-            alert_type: custom
-          annotations:
-            summary: Sjekk loggene til app {{ $labels.app }} i namespace {{ $labels.namespace }}, for å se hvorfor det er så mye feil
-        - alert:  namespace aap - Stor mengde 5xx feil siste 10 minutter
-          expr: (100 * (sum by (service, namespace) (rate(nginx_ingress_controller_requests{namespace="aap",status=~"^5\\d\\d",app!~"linkerd-proxy"}[3m]))/sum by (service, namespace) (rate(nginx_ingress_controller_requests{namespace="aap",app!~"linkerd-proxy"}[3m])))) > 10
-          for: 10m
-          labels:
-            severity: critical
-            namespace: aap
-            receiver_reference: "team-aap-alerts"
-            alert_type: custom
-          annotations:
-            summary: App {{ $labels.service }} har mange 5xx-feil siste
-        - alert:  Innsending - Journalføringer feiler
-          expr: increase(innsending_total{resultat="feilet"}[15m]) > 0
-          for: 30m
-          labels:
-            severity: critical
-            namespace: aap
-            receiver_reference: "team-aap-alerts"
-            alert_type: custom
-          annotations:
-            summary: "Journalføringer fra innsending har status feilet siste 30 min. Sjekk navikt/aap-innsending"
-        - alert: Manglende pods
-          expr: kube_deployment_status_replicas_available{namespace="aap"} == 0
-          for: 10m
-          labels:
-            severity: critical
-            namespace: aap
-            receiver_reference: "team-aap-alerts"
-            alert_type: custom
-          annotations:
-            summary: "`{{ $labels.deployment }}` mangler aktive pods."
+  # ALERTS ER MIDLERTIDIG DEAKTIVERT.
+  # Tom groups-liste gjør at reglene fjernes fra clusteret ved deploy
+  # (nais/deploy gjør apply, ikke prune - derfor må ressursen fortsatt deployes).
+  # For å skru på igjen: fjern linja under og avkommenter blokken nedenfor.
+  groups: []
+#  groups:
+#    - name: namespace aap
+#      rules:
+#        - alert: namespace aap - Høy error rate i logger
+#          expr: (100 * sum by (app, namespace) (rate(log_messages_errors{namespace="aap"}[3m])) / sum by (app, namespace) (rate(log_messages_total{namespace="aap"}[3m]))) > 10
+#          for: 3m
+#          labels:
+#            severity: critical
+#            namespace: aap
+#            receiver_reference: "team-aap-alerts"
+#            alert_type: custom
+#          annotations:
+#            summary: Sjekk loggene til app {{ $labels.app }} i namespace {{ $labels.namespace }}, for å se hvorfor det er så mye feil
+#        - alert:  namespace aap - Stor mengde 5xx feil siste 10 minutter
+#          expr: (100 * (sum by (service, namespace) (rate(nginx_ingress_controller_requests{namespace="aap",status=~"^5\\d\\d",app!~"linkerd-proxy"}[3m]))/sum by (service, namespace) (rate(nginx_ingress_controller_requests{namespace="aap",app!~"linkerd-proxy"}[3m])))) > 10
+#          for: 10m
+#          labels:
+#            severity: critical
+#            namespace: aap
+#            receiver_reference: "team-aap-alerts"
+#            alert_type: custom
+#          annotations:
+#            summary: App {{ $labels.service }} har mange 5xx-feil siste
+#        - alert:  Innsending - Journalføringer feiler
+#          expr: increase(innsending_total{resultat="feilet"}[15m]) > 0
+#          for: 30m
+#          labels:
+#            severity: critical
+#            namespace: aap
+#            receiver_reference: "team-aap-alerts"
+#            alert_type: custom
+#          annotations:
+#            summary: "Journalføringer fra innsending har status feilet siste 30 min. Sjekk navikt/aap-innsending"
+#        - alert: Manglende pods
+#          expr: kube_deployment_status_replicas_available{namespace="aap"} == 0
+#          for: 10m
+#          labels:
+#            severity: critical
+#            namespace: aap
+#            receiver_reference: "team-aap-alerts"
+#            alert_type: custom
+#          annotations:
+#            summary: "`{{ $labels.deployment }}` mangler aktive pods."
